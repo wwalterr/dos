@@ -1,0 +1,9 @@
+# Editor
+.vscode
+
+# Environment
+venv
+
+# Cache
+__pycache__
+cache_dir
