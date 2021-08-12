@@ -4,3 +4,4 @@ yapf==0.31.0
 asyncio==3.4.3
 aiohttp==3.7.4
 aiohttp-socks==0.6.0
+stem==1.8.0

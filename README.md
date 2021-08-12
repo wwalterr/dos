@@ -26,6 +26,12 @@ Use the package manager APT to install the TOR dependency.
 apt-get install tor
 ```
 
+Use any text editor to uncomment the two lines where `ControlPort 9051` and `CookieAuthentication 1` appear, to enable new TOR identity via script.
+
+```sh
+sudo xed /etc/tor/torrc
+```
+
 Use the Python 3 CLI to create a virtual environment.
 
 ```sh
@@ -41,7 +47,7 @@ source ./venv/bin/activate
 Use the package manager [Pip](https://pypi.org/project/pip/) to install the dependencies.
 
 ```sh
-pip3 install -r requirements.txt
+sudo pip3 install -r requirements.txt
 ```
 
 ## Usage
@@ -57,7 +63,7 @@ Change the url inside the _script.py_ to the attack target.
 Execute the script.
 
 ```sh
-python3 main.py
+sudo -u debian-tor python3 main.py
 ```
 
 ## Documentation

@@ -4,6 +4,10 @@ import aiohttp
 
 from aiohttp_socks import ProxyType, ProxyConnector
 
+from stem import Signal
+
+from stem.control import Controller
+
 import argparse
 
 import re
@@ -37,6 +41,12 @@ async def main(url, proxy_host, proxy_port):
             print(f'Request to {re.sub(PROTOCOL_PATTERN, "", url)} made through {await response.text()} has a {response.status} status code')
 
         await session.close()
+
+        # New identity
+        with Controller.from_port(port=9051) as controller:
+            controller.authenticate()
+
+            controller.signal(Signal.NEWNYM)
 
 
 if __name__ == '__main__':
