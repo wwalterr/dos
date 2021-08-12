@@ -22,7 +22,7 @@ PROXY_HOST = 'localhost'
 PROXY_PORT = 9050
 
 
-async def main(url, proxy_host, proxy_port):
+async def main(url: str, proxy_host: str = PROXY_HOST, proxy_port: str = PROXY_PORT):
     while True:
         # Proxy
         connector = ProxyConnector(
@@ -36,10 +36,11 @@ async def main(url, proxy_host, proxy_port):
         session = aiohttp.ClientSession(connector=connector)
 
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
+            'Connection:': 'keep-alive',
         }
 
-        async with session.get(url, headers=headers, keep_alive=False) as response:
+        async with session.get(url, headers=headers) as response:
             print(f'Request to {re.sub(PROTOCOL_PATTERN, "", url)} made through {await response.text()} has a {response.status} status code')
 
         await session.close()
@@ -49,6 +50,14 @@ async def main(url, proxy_host, proxy_port):
             controller.authenticate()
 
             controller.signal(Signal.NEWNYM)
+
+
+def runner(args: argparse.Namespace):
+    loop = asyncio.get_event_loop()
+
+    loop.create_task(main(args.url, args.proxy_host, args.proxy_port))
+
+    loop.run_forever()
 
 
 if __name__ == '__main__':
@@ -72,9 +81,5 @@ if __name__ == '__main__':
     )
 
     args = parser.parse_args()
-
-    loop = asyncio.get_event_loop()
-
-    loop.create_task(main(args.url, args.proxy_host, args.proxy_port))
-
-    loop.run_forever()
+    
+    runner(args)
