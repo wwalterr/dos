@@ -4,7 +4,7 @@ Asynchronous Denial-of-service attack through TOR.
 
 ## About
 
-An asynchronous Denial-of-service attack through the TOR network and with fake User-Agent.
+An asynchronous Denial-of-service attack through the TOR network.
 
 ## Built with
 
@@ -52,13 +52,23 @@ Start the TOR network.
 sudo service tor start
 ```
 
-Change the url inside the *script.py* to the attack target.
+Change the url inside the _script.py_ to the attack target.
 
 Execute the script.
 
 ```sh
 python3 main.py
 ```
+
+## Documentation
+
+The available CLI arguments are.
+
+- --url The attack target
+
+- --proxy_host The proxy host (optional)
+
+- --proxy_port The proxy port, available on proxy host (optional)
 
 ## Contributing
 
