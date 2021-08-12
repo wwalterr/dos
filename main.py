@@ -24,6 +24,7 @@ PROXY_PORT = 9050
 
 async def main(url, proxy_host, proxy_port):
     while True:
+        # Proxy
         connector = ProxyConnector(
             proxy_type=ProxyType.SOCKS5,
             host=proxy_host,
@@ -31,13 +32,14 @@ async def main(url, proxy_host, proxy_port):
             rdns=True
         )
 
+        # HTTP session
         session = aiohttp.ClientSession(connector=connector)
 
         headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
         }
 
-        async with session.get(url, headers=headers) as response:
+        async with session.get(url, headers=headers, keep_alive=False) as response:
             print(f'Request to {re.sub(PROTOCOL_PATTERN, "", url)} made through {await response.text()} has a {response.status} status code')
 
         await session.close()
