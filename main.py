@@ -19,23 +19,24 @@ PROXY_PORT = 9050
 
 
 async def main(url, proxy_host, proxy_port):
-    connector = ProxyConnector(
-        proxy_type=ProxyType.SOCKS5,
-        host=proxy_host,
-        port=proxy_port,
-        rdns=True
-    )
+    while True:
+        connector = ProxyConnector(
+            proxy_type=ProxyType.SOCKS5,
+            host=proxy_host,
+            port=proxy_port,
+            rdns=True
+        )
 
-    session = aiohttp.ClientSession(connector=connector)
+        session = aiohttp.ClientSession(connector=connector)
 
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
-    }
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
+        }
 
-    async with session.get(url, headers=headers) as response:
-        print(f'Request to {re.sub(PROTOCOL_PATTERN, "", url)} made through {await response.text()} has a {response.status} status code')
+        async with session.get(url, headers=headers) as response:
+            print(f'Request to {re.sub(PROTOCOL_PATTERN, "", url)} made through {await response.text()} has a {response.status} status code')
 
-    await session.close()
+        await session.close()
 
 
 if __name__ == '__main__':
@@ -62,4 +63,6 @@ if __name__ == '__main__':
 
     loop = asyncio.get_event_loop()
 
-    loop.run_until_complete(main(args.url, args.proxy_host, args.proxy_port))
+    loop.create_task(main(args.url, args.proxy_host, args.proxy_port))
+
+    loop.run_forever()
