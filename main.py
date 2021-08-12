@@ -4,12 +4,14 @@ import aiohttp
 
 from aiohttp_socks import ProxyType, ProxyConnector
 
-from fake_useragent import UserAgent
-
 import argparse
 
+import re
 
-URL = 'https://ident.me/'
+
+PROTOCOL_PATTERN = '^(?:https?:\/\/)?(?:www\.)?'
+
+URL = 'https://ident.me'
 
 PROXY_HOST = 'localhost'
 
@@ -26,10 +28,12 @@ async def main(url, proxy_host, proxy_port):
 
     session = aiohttp.ClientSession(connector=connector)
 
-    headers = {'User-Agent': UserAgent().random}
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
+    }
 
     async with session.get(url, headers=headers) as response:
-        print(response.status, await response.text())
+        print(f'Request to {re.sub(PROTOCOL_PATTERN, "", url)} made through {await response.text()} has a {response.status} status code')
 
     await session.close()
 
