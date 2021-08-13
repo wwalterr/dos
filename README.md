@@ -9,6 +9,7 @@ An asynchronous Denial-of-service attack through the TOR network.
 ## Built with
 
 - [Python](https://www.python.org/)
+- [Threading](https://docs.python.org/3/library/threading.html)
 - [Async IO](https://docs.python.org/3/library/asyncio.html)
 - [AIOHTTP](https://docs.aiohttp.org/en/stable/)
 - [TOR](https://www.torproject.org/)
@@ -77,7 +78,7 @@ The available CLI arguments are.
 
 - --proxy_port The proxy port, available on proxy host (optional, default `9050`)
 
-- --workers Number of threads, one event loop will be executed in each thread (optional, default `1`)
+- --workers Number of threads, one event loop will be executed in each thread (optional, default `8`) - [check](https://unix.stackexchange.com/a/351743) the amount of cores you have
 
 ## Contributing
 

