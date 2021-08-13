@@ -80,7 +80,9 @@ The available CLI arguments are.
 
 - --workers Number of threads, one event loop will be executed in each thread (optional, default `8`) - [check](https://unix.stackexchange.com/a/351743) the amount of cores you have
 
-For Cloud Flare targets. Please check [aiocfscrape](https://github.com/pavlodvornikov/aiocfscrape).
+For Cloud Flare targets check [aiocfscrape](https://github.com/pavlodvornikov/aiocfscrape). 
+
+Learn [how TOR works](https://www.youtube.com/watch?v=LAcGiLL4OZU) for further understand of what happens when you use this script.
 
 ## Contributing
 

@@ -31,6 +31,4 @@ if __name__ == '__main__':
         type=int
     )
 
-    args = parser.parse_args()
-
-    pool(args)
+    pool(parser.parse_args())
