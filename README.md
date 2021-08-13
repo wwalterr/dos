@@ -71,11 +71,13 @@ sudo -u debian-tor python3 main.py
 
 The available CLI arguments are.
 
-- --url The attack target
+- --url The attack target (default `ident.me`)
 
-- --proxy_host The proxy host (optional)
+- --proxy_host The proxy host (optional, default `localhost`)
 
-- --proxy_port The proxy port, available on proxy host (optional)
+- --proxy_port The proxy port, available on proxy host (optional, default `9050`)
+
+- --workers Number of threads, one event loop will be executed in each thread (optional, default `1`)
 
 ## Contributing
 
