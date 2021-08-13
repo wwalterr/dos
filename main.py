@@ -52,7 +52,8 @@ async def dos(url: str, proxy_host: str, proxy_port: str, worker: int):
         }
 
         async with session.get(url, headers=headers) as response:
-            print(f'#{worker + 1} Worker | Request to {re.sub(PROTOCOL_PATTERN, "", url)} made through {await response.text()} has a {response.status} status code')
+            # To check the IP add made through `await response.text()` and use the default URK
+            print(f'#{worker + 1} Worker | Request to {re.sub(PROTOCOL_PATTERN, "", url)} has a {response.status} status code') 
 
         await session.close()
 
