@@ -11,7 +11,7 @@ An asynchronous Denial-of-service attack through the TOR network.
 - [Python](https://www.python.org/)
 - [Threading](https://docs.python.org/3/library/threading.html)
 - [Async IO](https://docs.python.org/3/library/asyncio.html)
-- [AIOHTTP](https://docs.aiohttp.org/en/stable/)
+- [AIO HTTP](https://docs.aiohttp.org/en/stable/)
 - [TOR](https://www.torproject.org/)
 
 ## Installation
