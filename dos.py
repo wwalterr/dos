@@ -53,7 +53,7 @@ async def dos(url: str, proxy_host: str, proxy_port: str, worker: int):
 
         await session.close()
 
-        # New identity
+        # TOR new identity
         with Controller.from_port(port=9051) as controller:
             controller.authenticate()
 
