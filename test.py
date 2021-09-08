@@ -37,3 +37,7 @@ class TestDOS(IsolatedAsyncioTestCase):
             ip = response.read().decode('utf-8')
 
         self.assertNotEqual(ip, ip_proxy)
+
+
+if __name__ == '__main__':
+    unittest.main()
