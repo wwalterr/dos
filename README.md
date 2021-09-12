@@ -1,10 +1,10 @@
 # DOS
 
-Asynchronous Denial-of-service attack through TOR.
+Asynchronous DOS attack through TOR.
 
 ## About
 
-An asynchronous Denial-of-service attack through the TOR network.
+An asynchronous denial-of-service attack through the TOR network.
 
 ## Built with
 
