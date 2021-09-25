@@ -4,7 +4,7 @@ from dos import URL, PROXY_HOST, PROXY_PORT, WORKERS, pool
 
 
 if __name__ == '__main__':
-    parser = ArgumentParser(description='Asynchronous DOS attack through TOR.')
+    parser = ArgumentParser(description='Asynchronous and distributed DOS attack through TOR.')
 
     parser.add_argument(
         '--url',

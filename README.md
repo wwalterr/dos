@@ -1,10 +1,10 @@
 # DOS
 
-Asynchronous DOS attack through TOR.
+Asynchronous and distributed DOS attack through TOR.
 
 ## About
 
-An asynchronous denial-of-service attack through the TOR network.
+An asynchronous and distributed denial-of-service attack through the TOR network.
 
 ## Built with
 
@@ -12,6 +12,7 @@ An asynchronous denial-of-service attack through the TOR network.
 - [Threading](https://docs.python.org/3/library/threading.html)
 - [Async IO](https://docs.python.org/3/library/asyncio.html)
 - [AIO HTTP](https://docs.aiohttp.org/en/stable/)
+- [Ray](https://www.ray.io/)
 - [TOR](https://www.torproject.org/)
 
 ## Installation
@@ -60,8 +61,6 @@ Start the TOR network.
 sudo service tor start
 ```
 
-Change the url inside the _script.py_ to the attack target.
-
 Execute the script.
 
 ```sh
@@ -70,13 +69,15 @@ sudo -u debian-tor python3 main.py
 
 ## Test
 
-Test if the TOR is working. Run the test.
+Test if the TOR is working.
 
 ```sh
 python3 -m unittest
 ```
 
 ## Documentation
+
+### Parameters
 
 The available CLI arguments are.
 
@@ -86,11 +87,29 @@ The available CLI arguments are.
 
 - --proxy_port The proxy port, available on proxy host (optional, default `9050`)
 
-- --workers Number of threads, one event loop will be executed in each thread (optional, default `8`) - [check](https://unix.stackexchange.com/a/351743) the amount of cores you have
+- --workers Number of threads, one event loop will be executed in each thread (optional, default `8`)
 
-For Cloud Flare targets check [aiocfscrape](https://github.com/pavlodvornikov/aiocfscrape).
+For Cloud Flare targets check [AIO Scrape](https://github.com/pavlodvornikov/aiocfscrape).
 
-Learn [how TOR works](https://www.youtube.com/watch?v=LAcGiLL4OZU) for further understand of what happens when you use this script.
+### Distributed
+
+Start a Ray server in N machines.
+
+```sh
+ray start --head --redis-password="att@ck&r"
+```
+
+> Use the same Python 3 version and Ray version across all machines
+
+Set the URL, proxy host, proxy port and number of requests inside *distributed.py*, aside from Redis password that needs to mach the Ray servers.
+
+Execute the script.
+
+```sh
+python3 distributed.py
+```
+
+For more configurations check [configure](https://docs.ray.io/en/latest/configure.html) and for cloud check [clusters](https://docs.ray.io/en/master/cluster/cloud.html#cluster-cloud).
 
 ## Contributing
 
