@@ -10,8 +10,6 @@ from stem.control import Controller
 
 from stem import Signal
 
-from syncer import sync
-
 from argparse import Namespace
 
 
@@ -57,7 +55,6 @@ async def dos(url: str, proxy_host: str, proxy_port: str):
         controller.signal(Signal.NEWNYM)
 
 
-@sync
 async def dos_looper(url: str, proxy_host: str, proxy_port: str):
     while True:
         await dos(
