@@ -43,8 +43,11 @@ async def dos(url: str, proxy_host: str, proxy_port: str):
     # HTTP session
     session = ClientSession(connector=connector)
 
-    async with session.get(url, headers=HEADERS) as response:
-        print(f'Request status code {response.status}')
+    try:
+        async with session.get(url, headers=HEADERS) as response:
+            print(f'Request status code {response.status}')
+    except Exception as error:
+        print(str(error))
 
     await session.close()
 
