@@ -1,4 +1,4 @@
-setuptools==60.9.3
+setuptools==65.5.1
 wheel==0.38.1
 yapf==0.32.0
 asyncio==3.4.3
