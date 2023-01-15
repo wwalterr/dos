@@ -29,7 +29,7 @@ Use the package manager APT to install the TOR dependency.
 apt-get install tor=0.4.2.7-1
 ```
 
-Use any text editor to uncomment the two lines where `ControlPort 9051` and `CookieAuthentication 1` appear, to enable new TOR identity via script.
+Use any text editor to uncomment the two lines where `ControlPort 9051` and `CookieAuthentication 1` appear to enable new TOR identity via script.
 
 ```sh
 sudo xed /etc/tor/torrc
