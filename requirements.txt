@@ -2,7 +2,7 @@ setuptools==65.5.1
 wheel==0.38.1
 yapf==0.32.0
 asyncio==3.4.3
-aiohttp==3.8.5
+aiohttp==3.8.6
 aiohttp-socks==0.7.1
 stem==1.8.0
 syncer==1.3.0
