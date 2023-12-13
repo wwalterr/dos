@@ -89,7 +89,7 @@ The available CLI arguments are.
 
 - --workers Number of threads, one event loop will be executed in each thread (optional, default `8`)
 
-For Cloud Flare targets check [AIO Scrape](https://github.com/pavlodvornikov/aiocfscrape).
+For Cloud Flare targets check [AIO Scrape](https://github.com/pavlodvornikov/aiocfscrape) or [CloudScraper](https://github.com/VeNoMouS/cloudscraper).
 
 ### Distributed
 
