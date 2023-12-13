@@ -93,7 +93,7 @@ For Cloud Flare targets check [AIO Scrape](https://github.com/pavlodvornikov/aio
 
 ### Distributed
 
-Start a Ray server in N machines.
+Start a [Ray](https://docs.ray.io/en/latest/ray-overview/installation.html) server in N machines.
 
 ```sh
 ray start --head --redis-password="att@ck&r"
